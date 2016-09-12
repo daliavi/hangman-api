@@ -262,7 +262,7 @@ class GameService(object):
             message = 'You Won!'
             state = 2
         elif (wrong_attempts_count == 5) and (guess not in set(word)):
-            message = 'You Lost!'
+            message = 'You Lost! The word was: ' + str(word)
             state = 3
         return state, message
 
