@@ -1,0 +1,30 @@
+What additional properties did you add to your models and why?
+
+Differences in the Game model:
+game_status - I added this property to document the status of the game. It can be Active, Canceled or Finished.
+It is similar to game_over property in the initial code, but it can have multiple states, not only 2, like it had with the boolean property type. In this way I have a distinction between the finished and canceled games.
+
+user_guesses -  I am recording user guesses, after the each move, so the game history can be replayed at any time.
+
+created_at - it is a Time/date property used to select games that are active and were created more than 24 hours ago. It is used to send email reminders.
+
+I removed attempts_allowed and attempts_remaining properties. In Hangman game, the user can make 5 wrong guesses before the game is over. For each move I calculate and return the count of wrong guesses, so the developer building a user interface of the game can use it to "draw" hangman piece by piece.
+
+Differences in the Score model:
+missed_guesses -  I acced a count of missed guesses, so one can see how far the user was from losing the game.
+
+
+What were some of the trade-offs or struggles you faced when implementing the new game logic?
+
+The biggest struggle was to calculate user rankings. I thought Google App Engine datastore had some kind of aggregation queries, however I found that it was not the case. I know SQL quite well and I it would not be difficult to write such a query. However, this time I had to use Python to do all the data manipulation. It took me some time to research Python capabilities in this area. The amount of the data I have is not big, so I decided to use Python's built in functions like groupby and counter. I was also considering Pandas, but it seemed to be a bit of an overhead for my purpose, especially that it was not clear how Pandas is compatible with Google App Engine.
+
+Another decision I had to make was how to implement the history of the game. At first, I wanted to save every move to the datastore. But after implementing make_move function, I realised that I just need to have a list of user’s guesses. Using the list of guesses I can compute the history of the moves using the existing functions I have.
+
+At the end of the day I am happy with this implementation, because I can save on Google App Engine data storage quota.
+
+One more struggle I had was to move the game logic to the service.py file. I had to refactor models.py and api.py files, so that the service.py file was the only place to make calls to the datasore. Until the there were calls to the datastore from all the files in the project. The challenge here was to pass data from one function to another, so I decided to create a named tuple (game bundle) which contains different properties of the game that can be computed during the runtime and easily passed from one function to another.
+
+
+
+
+
