@@ -1,6 +1,7 @@
 #Hangman game
 
 ##Live version of the API:
+You can check the live version of the API here:
 https://daliavi-hangman.appspot.com/_ah/api/explorer
 
 ## Set-Up Instructions:
@@ -20,6 +21,9 @@ Otherwise, the program will penalize the guesser by incrementing the missed gues
 If the player makes 6 incorrect guesses, the game is also over.
 However, the guesser can also win by guessing all the letters that appears in the word.
 
+To play the game, first create a user. Then using the user name create a new game. Keep the key of the game,
+with it you can make a move, get game status or play the history.
+
 
 ##Files Included:
  - api.py: Contains endpoints.
@@ -27,7 +31,7 @@ However, the guesser can also win by guessing all the letters that appears in th
  - cron.yaml: Cronjob configuration.
  - main.py: Handler for cron jobs.
  - models.py: Entity and message definitions including helper methods.
- - service.py: Game login and connections to the data store.
+ - service.py: Game logic and connections to the data store.
  - utils.py: Helper function for retrieving ndb.Models by urlsafe Key string.
 
 ##Endpoints:
@@ -140,8 +144,7 @@ However, the guesser can also win by guessing all the letters that appears in th
 ##Forms Included:
  - **GameForm**
     - Representation of a Game's state
-    (urlsafe_key, word_status, wrong_attempst_count, game_status, message, user_anme
- 
+    (urlsafe_key, word_status, wrong_attempst_count, game_status, message, user_anme)
  - **ScoreForm**
     - Representation of a completed game's Score (user_name, total guesses, missed guesses).
  - **ScoreForms**
@@ -150,7 +153,7 @@ However, the guesser can also win by guessing all the letters that appears in th
     - Representation of user rankings (user_name, wins_ratio, avg_guesses).
  - **RankingForms**
     - Multiple RankingForm container.
-- **HistoryForm**
+ - **HistoryForm**
     - Representation of the history of user moves during the game (guess, message).
  - **HistoryForms**
     - Multiple HistoryForm container.

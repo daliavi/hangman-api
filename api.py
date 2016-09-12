@@ -28,7 +28,7 @@ CANCEL_REQUEST = endpoints.ResourceContainer(
 
 MAKE_MOVE_REQUEST = endpoints.ResourceContainer(
     urlsafe_game_key=messages.StringField(1),
-    guess = messages.StringField(2))
+    guess = messages.StringField(2,required=True))
 
 USER_REQUEST = endpoints.ResourceContainer(user_name=messages.StringField(1),
                                            email=messages.StringField(2))
