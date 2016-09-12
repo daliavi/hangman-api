@@ -4,9 +4,17 @@ import endpoints
 from protorpc import remote, messages
 from service import GameService
 
-from models import StringMessage, GameForm, \
-    ScoreForms, HistoryForm, HistoryForms, UserGamesForm, ScoreForm,\
-    RankingForm, RankingForms
+from models import(
+    StringMessage,
+    GameForm,
+    ScoreForms,
+    HistoryForm,
+    HistoryForms,
+    UserGamesForm,
+    ScoreForm,
+    RankingForm,
+    RankingForms
+)
 
 NEW_GAME_REQUEST = endpoints.ResourceContainer(
     user_name=messages.StringField(1))
