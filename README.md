@@ -36,7 +36,7 @@ However, the guesser can also win by guessing all the letters that appears in th
  - to get keys of all the active games of a user call `get_user_games` endpoint with the user name.
  
 ###Score calculation
-After each game a score record is added to teh data store. It contains player's username, win/lose indication,
+After each game a score record is added to the data store. It contains player's username, win/lose indication,
 a count of missed guesses and a count of total guesses made during that game.
 The `get_high_scores` endpoint returns data of the users who won the game ordered by the number
 of total guesses. The less tries it takes to guess a word, the better.
@@ -151,7 +151,8 @@ Average guesses for each user calculated:
         - username (string),
         - wins_ratio (float),
         - avg_guesses (float)
-    - Description: gets all scores from the data store, groups the data by username, calculates win/loose ratio and average guesses for each user, sorts the data by the ration (desc) and then by the average guess (asc)
+    - Description: gets all scores from the data store, groups the data by username, calculates win/loose ratio and average guesses for each user,
+    sorts the data by the ratio (desc) and then by the average number of guess (asc)
 
 - **cancel_game**
     - Path: 'cancel/{urlsafe_game_key}'
