@@ -59,13 +59,23 @@ class GameService(object):
     @classmethod
     def get_reminder_data(cls):
         # get emails of users that have active game for longer than a day
+        users_data = None
         games = Game.query()
+
         games = games.filter(Game.created_at < (datetime.utcnow()-timedelta(1)))
+        # if you want to test immediately, use this line instead:
+        # games = games.filter(Game.created_at < (datetime.utcnow()))
+
         games = games.filter(Game.game_status == 'Active').fetch()
+
+        if not games:
+            return users_data  # returns empty list, if no games found
+
         user_ids = set([g.user for g in games])
         users = User.query(User.key.IN(user_ids))
         users = users.filter(User.email <> None).fetch()
         users_data = [(u.name, u.email)for u in users]
+
         return users_data
 
     @classmethod

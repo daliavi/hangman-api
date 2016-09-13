@@ -9,8 +9,12 @@ from service import GameService
 class SendReminderEmail(webapp2.RequestHandler):
     def get(self):
         """Send a reminder email to each User with an email about an active game"""
-        app_id = app_identity.get_application_id()
         users = GameService.get_reminder_data()
+
+        if not users:
+            return
+
+        app_id = app_identity.get_application_id()
         for user in users:
             subject = 'Your Hangman game is waiting'
             body = 'Hello {}, you have an active Hangman game. ' \

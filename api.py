@@ -3,6 +3,7 @@
 import endpoints
 from protorpc import remote, messages
 from service import GameService
+import logging
 
 from models import(
     StringMessage,
