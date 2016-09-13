@@ -1,17 +1,17 @@
 #Hangman game
 
-##Live version of the API:
+##Live version of the API
 You can check the live version of the API here:
 https://daliavi-hangman.appspot.com/_ah/api/explorer
 
-## Set-Up Instructions:
+## Set-Up Instructions
 1. Download the project files from Github
 2. Update the value of application in app.yaml to the app ID you have registered
  in the App Engine admin console and would like to use to host your instance of this sample.
 3.  Run the app with the devserver using dev_appserver.py DIR, and ensure it's
  running by visiting the API Explorer - by default localhost:8080/_ah/api/explorer.
  
-##Game Description:
+##Game Description
 The word to guess is represented by a row of stars '*', representing each letter of the word.
 If the player suggests a letter which occurs in the word, the program writes it in all its correct positions. 
 If the suggested letter does not occur in the word, the program increments the missed guesses counter (max 6 allowed).
@@ -21,14 +21,37 @@ Otherwise, the program will penalize the guesser by incrementing the missed gues
 If the player makes 6 incorrect guesses, the game is also over.
 However, the guesser can also win by guessing all the letters that appears in the word.
 
-To play the game, first create a user. Then using the user name create a new game. Keep the key of the game,
-with it you can make a move, get game status or play the history.
+###How to play
+ - create a user using 'create_user' endpoint.
+ - using the user name create a new game by sending a request to 'new_game'.
+ Remember to save the 'urlsafe_game_key' of the new game.
+ - to play the game, send a request to 'make_move' endpoint with the 'urlsafe_game_key'
+ and the guess from the player. You will receive the state of the game after each move.
+ - at any time, you can check the status of the game by calling 'get_game' endpoint
+ with the 'urlsafe_game_key'
+ - you can get the history of the game by calling 'get_game_history' endpoint with the 'urlsafe_game_key'
+ - to cancel an active game, send a request to 'cancel_game' endpoint
+ - to get the high scores call 'get_high_scores' endpoint
+ - for user ranking send a request to 'get_user_rankings' endpoint
+ 
+###Score calculation
+After each game a score record is added to teh data store. It contains player's username, win/lose indication,
+a count of missed guesses and a count of total guesses made during that game.
+The 'get_high_scores' endpoint returns data of the users who won the game ordered by the number
+of total guesses. The less tries it takes to guess a word, the better.
+
+###User rankings calculation
+Players are ranked by the winning ration (desc) and then by the average number of guesses (asc).
+Win ration for each user is calculated using this formula:
+'count of all the games the user won / count of all the games the user played'
+Average guesses for each user calculated:
+'sum of the number of guesses for each user / count of total games'
 
 
 ##Files Included:
  - api.py: Contains endpoints.
  - app.yaml: App configuration.
- - cron.yaml: Cronjob configuration.
+ - cron.yaml: Cron job configuration.
  - main.py: Handler for cron jobs.
  - models.py: Entity and message definitions including helper methods.
  - service.py: Game logic and connections to the data store.
@@ -122,8 +145,8 @@ with it you can make a move, get game status or play the history.
     - Returns: RankingForms showing the list of ranked players and their performance indication
     The form contains:
         - username (string),
-        - count of missed guesses (int),
-        - total guesses guesses (int),
+        - wins_ratio (float),
+        - avg_guesses (float)
     - Description: gets all scores from the data store, groups the data by username, calculates win/loose ratio and average guesses for each user, sorts the data by the ration (desc) and then by the average guess (asc)
 
 - **cancel_game**
