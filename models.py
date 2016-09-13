@@ -3,6 +3,7 @@
 import random
 from protorpc import messages
 from google.appengine.ext import ndb
+from datetime import datetime, timedelta
 
 WORD_LIST = ['authentic', 'mama', 'lizard', 'canyon', 'shallow', 'ant', 'rat', 'bubble']
 
@@ -19,7 +20,7 @@ class Game(ndb.Model):
     game_status = ndb.StringProperty(required=True, default='Active') # can be Active, Canceled or Finished
     user = ndb.KeyProperty(required=True, kind='User')
     user_guesses = ndb.StringProperty(repeated=True)
-    created_at = ndb.DateTimeProperty(required=True, auto_now=True)
+    created_at = ndb.DateTimeProperty(required=True)
 
     @classmethod
     def new_game(cls, user):
@@ -28,7 +29,9 @@ class Game(ndb.Model):
                     word=random.choice(WORD_LIST),
                     game_status='Active',
                     user_guesses=[],
-                    parent=user.key
+                    parent=user.key,
+                    # games are created with an older date for testing
+                    created_at=datetime.utcnow()-timedelta(1)
                     )
         game.put()
         return game

@@ -4,12 +4,16 @@ cronjobs."""
 import webapp2
 from google.appengine.api import mail, app_identity
 from service import GameService
+import logging
 
 
 class SendReminderEmail(webapp2.RequestHandler):
     def get(self):
         """Send a reminder email to each User with an email about an active game"""
         users = GameService.get_reminder_data()
+        # logging for testing purpose
+        logging.info('Users from main.py')
+        logging.info(users)
 
         if not users:
             return

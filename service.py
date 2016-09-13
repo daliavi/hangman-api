@@ -9,6 +9,7 @@ from collections import Counter
 import operator
 import itertools
 from datetime import datetime, timedelta
+import logging
 
 # game bundle is used to pass game status between functions
 GameBundle = namedtuple('GameBundle', 'word_status wrong_attempts_count letters_missed message game error_msg')
@@ -63,10 +64,10 @@ class GameService(object):
         games = Game.query()
 
         games = games.filter(Game.created_at < (datetime.utcnow()-timedelta(1)))
-        # if you want to test immediately, use this line instead:
-        # games = games.filter(Game.created_at < (datetime.utcnow()))
-
         games = games.filter(Game.game_status == 'Active').fetch()
+        # logging for testing purposes
+        logging.info('Games returned from get_reminder_method')
+        logging.info(games)
 
         if not games:
             return users_data  # returns empty list, if no games found
