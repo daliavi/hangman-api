@@ -42,11 +42,11 @@ The `get_high_scores` endpoint returns data of the users who won the game ordere
 of total guesses. The less tries it takes to guess a word, the better.
 
 ###User rankings calculation
-Players are ranked by the winning ration (desc) and then by the average number of guesses (asc).
-Win ration for each user is calculated using this formula:
-`count of all the games the user won / count of all the games the user played`
+Players are ranked by the winning ratio (desc) and then by the average number of guesses (asc).
+Win ratio for each user is calculated using this formula:
+> `count of all the games the user won / count of all the games the user played`
 Average guesses for each user calculated:
-`sum of the number of guesses for each user / count of total games`
+> `sum of the number of guesses for each user / count of total games`
 
 
 ##Files Included:
