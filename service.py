@@ -181,6 +181,8 @@ class GameService(object):
             message = 'This game was canceled. Please start a new one!'
         elif game.game_status == 'Finished':
             message = 'This game is over. Please start a new one!'
+        else:
+            message = 'You should not end up here.'
         return GameBundle(
             word_status=word_status,
             wrong_attempts_count=wrong_attempts_count,
@@ -245,9 +247,33 @@ class GameService(object):
         # state=1, wrong guess.
         # state=2, game over, won.
         # state=3, game over, lost.
+        # state=4, invalid or repeated character
         user_guesses = [x.lower() for x in user_guesses]
         guess = guess.lower()
         word = word.lower()
+
+        if not guess.isalpha():
+            message = 'Please enter a valid character or a word'
+            state = 4
+            return state, message
+
+        if guess in user_guesses:
+            message = 'You already guessed this character. Try a different one!'
+            state = 4
+            return state, message
+
+        user_guesses = set(user_guesses)
+        user_guesses.add(guess)
+        if guess == word \
+                or user_guesses > set(word):
+            message = 'You Won!'
+            state = 2
+            return state, message
+
+        elif (wrong_attempts_count == 5) and (guess not in set(word)):
+            message = 'You Lost! The word was: ' + str(word)
+            state = 3
+            return state, message
 
         if guess in set(word):
             message = 'Good guess! Make another move!'
@@ -255,15 +281,6 @@ class GameService(object):
         else:
             message = 'You missed it! Try another letter!'
             state = 1
-        user_guesses = set(user_guesses)
-        user_guesses.add(guess)
-        if guess == word \
-                or user_guesses > set(word):
-            message = 'You Won!'
-            state = 2
-        elif (wrong_attempts_count == 5) and (guess not in set(word)):
-            message = 'You Lost! The word was: ' + str(word)
-            state = 3
         return state, message
 
     @classmethod
@@ -279,19 +296,26 @@ class GameService(object):
                 or game_bundle.game.game_status != 'Active':
             return game_bundle
 
-        game_bundle.game.user_guesses.append(guess.lower())
-
         state, message = cls.get_result(
             game_bundle.game.word,
             game_bundle.game.user_guesses,
             guess,
             game_bundle.wrong_attempts_count)
 
+        # state=4, invalid or repeated character
+        if state == 4:
+            game_bundle = game_bundle._replace(message=message)
+            return game_bundle
+
+        game_bundle.game.user_guesses.append(guess.lower())
+
         # state=2, game over, won. state=3, game over, lost.
         if state in [2, 3]:
             game_bundle.game.game_status = 'Finished'
 
+        # updating the game with the new guess and game status (if changed)
         game_bundle.game.put()
+
         # get updated bundle with the latest guess
         updated_game_bundle = cls.get_bundle(urlsafe_game_key, message=message)
 
