@@ -49,7 +49,7 @@ Win ratio for each user is calculated using this formula:
 
 Average guesses for each user calculated:
 
-`sum of the number of guesses for each user / count of total games`
+`sum of the number of guesses for each user / count of all the games the user played`
 
 
 ##Files Included:
