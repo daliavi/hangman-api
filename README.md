@@ -22,8 +22,8 @@ If the player makes 6 incorrect guesses, the game is also over.
 However, the guesser can also win by guessing all the letters that appears in the word.
 
 ###How to play
- - create a user using `create_user` endpoint.
- - using the user name create a new game by sending a request to `new_game`.
+ - create a user using `create_user` endpoint. Remember your user name!
+ - using the user name, create a new game by sending a request to `new_game`.
  Remember to save the `urlsafe_game_key` of the new game.
  - to play the game, send a request to `make_move` endpoint with the `urlsafe_game_key`
  and the guess from the player. You will receive the state of the game after each move.
@@ -33,6 +33,7 @@ However, the guesser can also win by guessing all the letters that appears in th
  - to cancel an active game, send a request to `cancel_game` endpoint
  - to get the high scores call `get_high_scores` endpoint
  - for user ranking send a request to `get_user_rankings` endpoint
+ - to get keys of all the active games of a user call `get_user_games` endpoint with the user name.
  
 ###Score calculation
 After each game a score record is added to teh data store. It contains player's username, win/lose indication,
