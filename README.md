@@ -12,7 +12,7 @@ https://daliavi-hangman.appspot.com/_ah/api/explorer
  running by visiting the API Explorer - by default localhost:8080/_ah/api/explorer.
  
 ##Game Description
-The word to guess is represented by a row of stars '*', representing each letter of the word.
+The word to guess is represented by a row of stars `*`, representing each letter of the word.
 If the player suggests a letter which occurs in the word, the program writes it in all its correct positions. 
 If the suggested letter does not occur in the word, the program increments the missed guesses counter (max 6 allowed).
 The player guessing the word may, at any time, attempt to guess the whole word.
@@ -22,30 +22,30 @@ If the player makes 6 incorrect guesses, the game is also over.
 However, the guesser can also win by guessing all the letters that appears in the word.
 
 ###How to play
- - create a user using 'create_user' endpoint.
- - using the user name create a new game by sending a request to 'new_game'.
- Remember to save the 'urlsafe_game_key' of the new game.
- - to play the game, send a request to 'make_move' endpoint with the 'urlsafe_game_key'
+ - create a user using `create_user` endpoint.
+ - using the user name create a new game by sending a request to `new_game`.
+ Remember to save the `urlsafe_game_key` of the new game.
+ - to play the game, send a request to `make_move` endpoint with the `urlsafe_game_key`
  and the guess from the player. You will receive the state of the game after each move.
- - at any time, you can check the status of the game by calling 'get_game' endpoint
- with the 'urlsafe_game_key'
- - you can get the history of the game by calling 'get_game_history' endpoint with the 'urlsafe_game_key'
- - to cancel an active game, send a request to 'cancel_game' endpoint
- - to get the high scores call 'get_high_scores' endpoint
- - for user ranking send a request to 'get_user_rankings' endpoint
+ - at any time, you can check the status of the game by calling `get_game` endpoint
+ with the `urlsafe_game_key`
+ - you can get the history of the game by calling `get_game_history` endpoint with the `urlsafe_game_key`
+ - to cancel an active game, send a request to `cancel_game` endpoint
+ - to get the high scores call `get_high_scores` endpoint
+ - for user ranking send a request to `get_user_rankings` endpoint
  
 ###Score calculation
 After each game a score record is added to teh data store. It contains player's username, win/lose indication,
 a count of missed guesses and a count of total guesses made during that game.
-The 'get_high_scores' endpoint returns data of the users who won the game ordered by the number
+The `get_high_scores` endpoint returns data of the users who won the game ordered by the number
 of total guesses. The less tries it takes to guess a word, the better.
 
 ###User rankings calculation
 Players are ranked by the winning ration (desc) and then by the average number of guesses (asc).
 Win ration for each user is calculated using this formula:
-'count of all the games the user won / count of all the games the user played'
+`count of all the games the user won / count of all the games the user played`
 Average guesses for each user calculated:
-'sum of the number of guesses for each user / count of total games'
+`sum of the number of guesses for each user / count of total games`
 
 
 ##Files Included:
